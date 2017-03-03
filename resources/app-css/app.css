@@ -1,0 +1,232 @@
+﻿
+.front-label-12{
+	color:rgba(120,120,120,1);
+	font-size:12px;
+}
+
+
+/* 用于显示带边框和阴影的panel,圆角 */
+.shadow-panel{
+	
+	color: inherit;
+	background-color: #eee;
+	box-sizing: border-box;
+	
+	padding:10px;
+	margin:10px;
+	
+	/* 圆角 */
+	border-radius: 6px;
+	
+	/*影音*/
+	-moz-box-shadow:5px 5px 6px #cbcbcb;
+	-webkit-box-shadow:5px 5px 6px #cbcbcb;
+	box-shadow: 5px 5px 6px 0 #cbcbcb;
+}
+
+.white-panel{
+	
+	color: inherit;
+	background-color: rgba(255,255,255,1);
+	box-sizing: border-box;
+	
+	border-top     : 1px solid rgba(197,197,197,1);
+	border-left    : 1px solid rgba(197,197,197,1);
+	
+	padding:10px;
+	margin:10px;
+	
+	/* 圆角 */
+	border-radius: 6px;
+	
+	/*影音*/
+	-moz-box-shadow:5px 5px 6px #cbcbcb;
+	-webkit-box-shadow:5px 5px 6px #cbcbcb;
+	box-shadow: 5px 5px 6px 0 #cbcbcb;
+}
+
+/*用于商品搜索结果列表中的分类Title bar显示，*/
+.classify-horizontal {
+  	padding-top: 0px;
+  	padding-bottom: 0px;
+  	margin-bottom: 0px;
+  	color: inherit;
+  
+  	border-top     : 1px solid rgba(197,197,197,1);
+	border-left    : none;
+	border-bottom  : 1px solid rgba(197,197,197,1);
+	border-right   : none;
+}
+.classify-horizontal p {
+	padding-top: 5px;
+  	padding-bottom: 5px;
+  	margin-bottom: 5px;
+ 	font-size: 14px;
+  	font-weight: 200;
+}
+.container .classify-horizontal,
+.container-fluid .classify-horizontal {
+  border-radius: 0px;
+}
+.classify-horizontal .container {
+  max-width: 100%;
+}
+@media screen and (min-width: 768px) {
+ 	.classify-horizontal {
+ 	  padding-top: 0px;
+ 	  padding-bottom: 0px;
+ 	}
+ 	.container .classify-horizontal,
+ 	.container-fluid .classify-horizontal {
+ 	  padding-right: 30px;
+ 	  padding-left: 15px;
+ 	}
+  	.container.classify-horizontal > hr,
+  	.container-fluid .classify-horizontal > hr,{
+  	   	padding-right: 0px; 
+    	padding-left: 0px;
+	}
+}
+
+/*用于商品搜索结果列表中 Items 列表的显示*/
+.item-list {
+  	padding-top: 0px;
+  	padding-bottom: 0px;
+  	margin-bottom: 0px;
+  	color: inherit;
+  
+  	border-top     : none;
+	border-left    : 1px solid rgba(197,197,197,1);
+	border-bottom  : none;
+	border-right   : none;
+}
+.container .item-list,
+.container-fluid .item-list{
+  border-radius: 0px;
+}
+.item-list .container {
+  max-width: 100%;
+}
+@media screen and (min-width: 768px) {
+ 	.item-list {
+ 	  padding-top: 0px;
+ 	  padding-bottom: 0px;
+ 	}
+ 	.container .item-list,
+ 	.container-fluid .item-list {
+ 	  padding-right: 30px;
+ 	  padding-left: 15px;
+ 	}
+}
+
+/* 用于自定义的tab panel 显示 */
+.app-tab-panel-left{
+
+	border-left    : 1px solid rgba(221,221,221,1);
+}
+.app-tab-content{
+
+	min-height     : 80px;
+	max-height     : 200px;
+	
+	padding-top       :5px;
+ 	padding-bottom    :5px;
+ 	padding-right     :5px;
+ 	padding-left      :10px;
+}
+
+.app-tab-content .app-pre-scrollable{
+	
+	max-height: 200;
+  	overflow-y: scroll
+}
+
+@media screen and (min-width: 768px) {
+	
+ 	.app-tab-content{
+ 		
+ 		min-height     : 150px;
+ 		max-height     : 500px;
+ 		
+ 		padding-top       :5px;
+ 		padding-bottom    :5px;
+ 		padding-right     :5px;
+ 		padding-left      :10px;
+ 	}
+ 	.app-tab-content .app-pre-scrollable{
+	
+		max-height: 500;
+  		overflow-y: scroll
+	}
+}
+
+/* 直接copy pre-scrollable 调整最大高度 */
+.app-pre-scrollable{
+  max-height: 400;
+  overflow-y: scroll;
+}
+
+/* 用于 model的宽度定义 */
+
+.modal .modal-width-normal {
+	width: 90%;
+}
+
+@media screen and (min-width: 1300px) {
+ 	.modal .modal-width-normal {
+    	width: 80%;
+	}
+}
+
+/* 应用该样式的div 会固定高度，如果操过，滚动条出现在div所在位置 */
+.fixed-scrollable {
+    min-height: 300px;
+    overflow-y:auto;
+    max-height: 500px;
+}
+
+@media screen and ( min-height: 900px ) {
+    .fixed-scrollable {
+        min-height: 400px;
+        overflow-y:auto;
+        max-height: 700px;
+    }
+}
+
+/* 调整row 下的 column 到一个高度 : 注意，这会导致bootstrap row col的自动换行功能失效*/
+.row-same-height {
+  	display: -webkit-box;
+  	display: -moz-box;
+  	display: -ms-flexbox;
+  	display: -webkit-flex;
+  	display: flex;
+}
+.row-same-height > [class*='col-'] {
+	 display: flex;
+	 flex-direction: column;
+}
+
+/* 截断字符 */
+.text-cut-off{
+	/* width:150px; 宽度必须设置，在元素中自行决定 */
+	overflow:hidden; 
+	text-overflow:ellipsis; 
+	white-space:nowrap;
+}                                 
+
+/* 使div在视图中绝对居中 */
+.vertical-center{                  
+  position: absolute;    
+  top  : 50%;
+  left : 50%;                                                   
+  transform: translate(-50%,-50%);
+} 
+
+.Absolute-Center {  
+  width: 50%;  
+  height: 50%;  
+  overflow: auto;  
+  margin: auto;  
+  position: absolute;  
+  top: 0; left: 0; bottom: 0; right: 0;  
+}                                

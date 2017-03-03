@@ -1,0 +1,88 @@
+
+/* Cover the original class -- start */
+
+/* 
+ * cover zoomContainer , zoomWindow of ZOOM
+ * raise the z-index of the zoom plugin to max, ensure it can also work in Bootstrap modal window 
+ */
+.zoomContainer {
+	z-index: 2050; !important;
+	/* modal --> z-index: 1050; */
+}
+	
+.zoomWindow{
+    z-index: 2050; !important;
+    /* modal --> z-index: 1050; */
+} 
+
+/* Cover the original class -- end */
+
+
+/* Just use important to cover the original class -- start */
+
+.non-padding-left {
+	padding-left: 0px !important;
+}
+.non-padding-right {
+	padding-right: 0px !important;
+}
+.non-padding-left-right {
+	padding-left: 0px !important;
+	padding-right: 0px !important;
+}
+
+.non-padding-top-bottom {
+	padding-top     : 0px !important;
+	padding-bottom  : 0px !important;
+	margin 			: 0px !important;
+}
+
+
+.five-padding-top-bottom {
+	padding-top     : 5px !important;
+	padding-bottom  : 5px !important;
+	margin 			: 5px !important;
+}
+
+
+.no-border{
+	border: 1px solid transparent !important;
+}
+
+.border-around{
+    
+    border-top     : 1px solid rgba(197,197,197,1);
+	border-left    : 1px solid rgba(197,197,197,1);
+	border-bottom  : 1px solid rgba(197,197,197,1);
+	border-right   : 1px solid rgba(197,197,197,1);
+}
+
+.just-left-border {
+  	border-top     : none;
+	border-left    : 1px solid rgba(197,197,197,1);
+	border-bottom  : none;
+	border-right   : none;
+}
+
+.just-right-border {
+  	border-top     : none;
+	border-left    : none;
+	border-bottom  : none;
+	border-right   : 1px solid rgba(197,197,197,1);
+}
+
+.just-bottom-border {
+  	border-top     : none;
+	border-left    : none;
+	border-bottom  : 1px solid rgba(197,197,197,1);
+	border-right   : none;
+}
+
+.just-left-bottom-border {
+  	border-top     : none;
+	border-left    : 1px solid rgba(197,197,197,1);
+	border-bottom  : 1px solid rgba(197,197,197,1);
+	border-right   : none;
+}
+
+/* Just use important to cover the original class -- end */
