@@ -14,7 +14,7 @@ import { Component, Input, Output, EventEmitter }  from '@angular/core';
 						<span class="icon-bar"></span> 
 						<span class="icon-bar"></span>
 					</button>
-					<img src="/image/logo_small.png" class="navbar-brand" width="150"/>
+					<img src="http://192.168.0.29/image/logo_small.png" class="navbar-brand" width="150"/>
 				</div>
 				<div id="navbar" class="navbar-collapse collapse">
 					<form class="navbar-form navbar-right">

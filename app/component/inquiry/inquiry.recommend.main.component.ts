@@ -6,11 +6,15 @@
 
 import { Component, Output, EventEmitter, ViewChild  }      from '@angular/core';  
 
-import { TooltipModule } from 'ng2-bootstrap/ng2-bootstrap';
+import { TooltipModule, DropdownModule } from 'ng2-bootstrap/ng2-bootstrap';
 
 import { InquiryRecommendSupplierFirstComponent } from './inquiry.recommend.supplierfirst.component';
 
 import { RecommendService } from '../../service/inquiry/recommend.service'; 
+
+import { RecommendIndex } from '../../model/recommend'
+
+import { IndexConditionFormatPipe } from '../../pipe/index.condition.format.pipe'
 
 @Component(
 	{
@@ -23,16 +27,38 @@ import { RecommendService } from '../../service/inquiry/recommend.service';
     					<div class="col-xs-12 col-sm-12 col-lg-12">
     						<a routerLink="/inquiryRecommend/supplierFirstIndexList" href="javascript:;">
     							<i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-    							<span>Inquiry Result</span>
-    							<span class="badge badge-success">2</span>
+    							<span>Previous Inquiries</span>
     						</a>
-    						<a routerLink="/inquiryRecommend/supplierFirstIndexList" href="javascript:;">
+    						<a id="inquiry-recommend-inquirying-ahref" routerLink="/inquiryRecommend/supplierFirstIndexList" href="javascript:;">
     							<i class="fa fa-spinner" aria-hidden="true"></i>
-    							<span>Inquirying</span>
+    							<span dropdown [isOpen]="newInquiryingListDropdownStatus.isopen" (onToggle)="newInquiryingListDropdownToggled($event)">
+                                    <a href="javascript:;" id="new-inquirying-list" dropdownToggle>
+                                        Running Inquiries
+                                    </a>
+                                    <ul class="dropdown-menu" dropdownMenu aria-labelledby="new-inquirying-list">
+                                        <template ngFor let-newRecommendIndex [ngForOf]="newInquiryingList" let-numberIndex="index" >
+                                        <li role="menuitem" >
+                                            <a href="javascript:;" class="dropdown-item">Running : {{newRecommendIndex?.indexCondition | indexConditionFormat }}</a>
+                                        </li>
+                                        </template>
+                                        <hr/>
+                                        <template ngFor let-completeRecommendIndex [ngForOf]="completeInquiryingList">
+                                        <li role="menuitem" >
+                                            <a (click)="showSupplierFirstSearch( completeRecommendIndex.indexId , $event )" class="dropdown-item bg-green" href="javascript:;">
+                                                Complete : {{completeRecommendIndex?.indexCondition | indexConditionFormat }}
+                                            </a>
+                                        </li>
+                                        </template>
+                                    </ul>
+                                </span>	
     							<span class="badge badge-success">
-    							    {{requiringNumber}}
+    							    {{newInquiryingList?.length}}
     							</span>
-    						</a>
+    							<span class="badge badge-success bg-green">
+    							    {{completeInquiryingList?.length}}
+    							</span>
+    						</a>	
+    						
     					</div>
   					</div>
   				</div>
@@ -41,14 +67,22 @@ import { RecommendService } from '../../service/inquiry/recommend.service';
     				<div class="row"><!--/row-search-bar start-->
     					<div class="col-xs-12 col-sm-12 col-lg-12">
     						<ul class="nav nav-pills" role="tablist">
-							  <li role="presentation"><a><h3>Wheel</h3></a></li>
-							  <li role="presentation"><a class="just-left-border"><h3>Tire</h3></a></li>
-							  <li role="presentation"><a class="just-left-border"><h3>Tools</h3></a></li>
+							  <li role="presentation"><a><h4>Wheel           </h4></a></li>
+							  <li role="presentation"><a><h4>Tire            </h4></a></li>
+							  <li role="presentation"><a><h4>Tools           </h4></a></li>
+							  <li role="presentation"><a><h4>Electronics     </h4></a></li>
+							  <li role="presentation"><a><h4>Trailer Parts   </h4></a></li>
+							  <li role="presentation"><a><h4>RV Accessories  </h4></a></li>
+							  <li role="presentation"><a><h4>Decorations     </h4></a></li>
+							  <li role="presentation"><a><h4>Others          </h4></a></li>
 							</ul>
     					</div>
     				</div>
     			</div><!--/container-->
   			</div>
+  			
+  			
+  			
   			<div id="inquiry-recommend-condition-container" class="container" style="display:none" ><!--/container start-->
   				
     			<div class="row"><!--/row-search-bar start-->
@@ -58,7 +92,15 @@ import { RecommendService } from '../../service/inquiry/recommend.service';
 							
 							<div class="row"><!--/row-search-bar start-->
 								<div class="col-xs-4 col-xs-offset-8  col-md-2 col-md-offset-10">
-									<button class="btn btn-default" (click)="newRecommend();">Search</button>
+									<button class="btn btn-default" (click)="newRecommend( $event );">Search</button>
+									<div id="inquiry-recommend-animation-search-button" style="display:none;position:absolute;">
+									    <template [ngIf]="newRecommendIndexId != null">
+									        {{newRecommendIndexId}}
+									    </template>
+									    <template [ngIf]="newRecommendIndexId == null">
+									        Inquirying
+									    </template>
+			                        </div>
 								</div>
   							</div>
   							<form>
@@ -97,6 +139,14 @@ import { RecommendService } from '../../service/inquiry/recommend.service';
 									</div>
 								</div>
 								<div class="row">
+									<div class="col-xs-1"></div>
+									<div class="col-xs-7">
+									    <div class="form-group">
+									        <input type="text" class="form-control" id="c_r_i_c_h" placeholder="Hub Diameter Manual" />
+									    </div>
+									</div>
+								</div>
+								<div class="row">
 									<div class="col-xs-6">
 										PCD
 									</div>
@@ -116,31 +166,7 @@ import { RecommendService } from '../../service/inquiry/recommend.service';
     				<div class="col-xs-0  col-sm-1 col-md-2 col-lg-2"></div>
     			</div>
     		</div><!--/container-->
-    		
-    		<!-- start:new-recommend-result-modal  -->
-    		<div class="modal fade" id="new-recommend-result-modal" role="dialog" aria-hidden="true">
-				<div class="modal-dialog modal-width-normal">
-				<!-- start modal-content -->
-		    	<div class="modal-content">
-		      	    <div class="modal-header">
-		      		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-		      		        &times;
-		      		    </button>
-		      		    <h4 class="modal-title" id="inquire-status-modal-ModalLabel">New Recommed Inquiry in Running</h4>
-		      		    <span class="front-label-12">Criteria <i class="fa fa-filter" aria-hidden="true"></i> Wheel Hub Diameter : 17, 18</span>
-		   			</div>
-		            <div class="modal-body modal-active-scroll">
-		                The recommend index ID is : <strong>{{newRecommendIndexId}}</strong>
-		                <p>It's in running now, please wait for some time and check it in the "Inquiry Result".
-  					</div>		
-            
-		    		<div class="modal-footer">
-		    	   	<button type="button" class="btn btn-default" data-dismiss="modal">
-		    	    	Close
-		    	   	</button>
-		    		</div>
-		  		</div><!-- /.modal-content -->
-		    </div>
+
     		<!-- end:new-recommend-result-modal  -->
     		<inquiry-recommend-supplierfisrt-modal></inquiry-recommend-supplierfisrt-modal>
     		
@@ -176,13 +202,20 @@ import { RecommendService } from '../../service/inquiry/recommend.service';
 
 export class InquiryRecommendMain {     
 
+    @ViewChild(InquiryRecommendSupplierFirstComponent) supplierFirstModal : InquiryRecommendSupplierFirstComponent;
+
     errorMessage : String;
     
-    newRecommendIndexId : String;
-    
-    requiringNumber : number = 0;
+    newRecommendIndexId : string;
     
     indexCreateParameter : any = {};
+    
+    newInquiryingList      : RecommendIndex [] = [];
+    completeInquiryingList : RecommendIndex [] = [];
+    
+    newInquiryingListDropdownStatus      : {isopen: boolean} = {isopen: false};
+    
+    indexRunningInterval : any;
 
   	constructor (
   		private recommendService  : RecommendService
@@ -226,15 +259,15 @@ export class InquiryRecommendMain {
   		);	
   	}
   	
-  	showSupplierFirstSearch( event : any ){
-  		
+  	showSupplierFirstSearch( indexId :string , event : any ){
   		event.stopPropagation(); 
   		$('#inquiry-recommend-supplierfisrt-modal').modal();
+  		this.supplierFirstModal.getRecommendSuppliers( indexId );
   	}
   	
-  	newRecommend(){
+  	newRecommend( event : any ){
   	
-  	    let thisComponent = this;
+  	    let thisComponent : any = this;
   	
   	    this.indexCreateParameter = { "PCD":[] , "hubDiameter":[] , "material":[] };
   	   
@@ -259,6 +292,11 @@ export class InquiryRecommendMain {
                 } 
             }
         );
+        $("input[id='c_r_i_c_h']").each(
+  	        function( index : any , element : any  ){
+                thisComponent.indexCreateParameter.hubDiameter.push( element.value );
+            }
+        );
         $("input[id='r_i_c_pcd']").each(
   	        function( index : any , element : any  ){
                 if( element.value != null ){
@@ -273,13 +311,105 @@ export class InquiryRecommendMain {
         
         this.recommendService.newRecommendIndex( this.indexCreateParameter ).subscribe(
         	reponseData => { 
+        	
         		this.newRecommendIndexId = reponseData.data.indexId;
-        		this.requiringNumber ++;
         		
-        		$('#new-recommend-result-modal').modal();
+        		let inquiryingAhref = $("#inquiry-recommend-inquirying-ahref");
+                let target          = $(event.target);
+  	            if( inquiryingAhref && target ){
+  	                let curleft = inquiryingAhref.offset().left;
+                    let curtop  = inquiryingAhref.offset().top + inquiryingAhref.outerHeight();
+                    
+                    let targetLeft = target.offset().left;
+                    let targetTop  = target.offset().top + target.outerHeight();
+                    
+                    let moveX = curleft - targetLeft;
+                    let moveY = curtop  - targetTop;
+                    
+                    requirejs(
+  		        	    ['jquery', 'velocity'],
+  		        	    ( $ : any , Velocity : any  ) => {
+  		        		    $("#inquiry-recommend-animation-search-button").velocity(
+  		        			    { translateX : moveX , translateY : ( moveY - 30 ) , scale:0.0 },
+  		        			    { 
+  		        			        duration: 800, display: "table",
+  		        			        begin    : function(){
+  		        			            thisComponent.newInquiryingListDropdownStatus.isopen = true;
+  		        			        },
+  		        			        complete : function(){
+  		        			            let newRecommend : RecommendIndex = new RecommendIndex();
+                                        newRecommend.indexCondition = JSON.stringify( thisComponent.indexCreateParameter );
+                                        newRecommend.indexId        = reponseData.data.indexId;
+                                        thisComponent.newInquiryingList.push( newRecommend );
+                                        
+                                        let intervalInquiryRunningIndexStatus = () => { 
+                                            return thisComponent.intervalInquiryRunningIndexStatus();
+                                        }
+                                        
+                                        if( thisComponent.indexRunningInterval == null ){
+                                            thisComponent.indexRunningInterval=setInterval( intervalInquiryRunningIndexStatus, 4000 );
+                                        }
+  		        			        }
+  		        			    }
+  		        		    ).velocity(
+  		        			    { translateX : 0 , translateY : 0, scale:1 },
+  		        			    { duration: 10 , display: "none" }
+  		        		    )
+		        	    }
+  		            );
+  	            }
         	},
             error => { this.errorMessage = <any>error }
-        );
+        ); 
+  	}
+  	
+  	public intervalInquiryRunningIndexStatus():void{
+  	
+  	    var thisComponent = this;
+  	    
+  	    let indexIds : any[] = [];
+  	    if( thisComponent.newInquiryingList ){
+  	        for( let i=0; i<thisComponent.newInquiryingList.length ; i++ ){
+  	            indexIds.push( thisComponent.newInquiryingList[i].indexId );
+  	        }  
+  	    }
+  	    
+  	    if( indexIds.length > 0 ){
+  	        this.recommendService.queryRecommendList( { "indexIds" : indexIds } ).subscribe(
+  		        reponseData => { 
+  		        
+  		    	    let finished : RecommendIndex []  = reponseData.data;
+  		    	    
+  		    	    if( finished ){
+  		    	        for( let i = 0 ; i<finished.length ; i++ ){
+  		    	            
+  		    	            if( finished[i].indexId ){
+  		    	            
+  		    	                for( let j=0 ; j <thisComponent.newInquiryingList.length ; j++ ){
+  		    	                    if( finished[i].indexId == thisComponent.newInquiryingList[j].indexId ){
+  		    	                        thisComponent.completeInquiryingList.push( thisComponent.newInquiryingList[j] );
+  		    	                        thisComponent.newInquiryingList.splice( j , 1 );
+  		    	                        j--;
+  		    	                    }
+  		    	                }
+  		    	            }
+  		    	        }
+  		    	    } 
+  		    	    
+  		    	    if( thisComponent.newInquiryingList.length <= 0 ){
+  		    	        clearInterval( thisComponent.indexRunningInterval );
+  		    	        thisComponent.indexRunningInterval = null;
+  		    	    }
+  		        },
+  	            error => { this.errorMessage = <any>error }
+  	        );
+  	    } 
+  	}
+  	
+  	private newInquiryingListDropdownToggled(open:boolean):void {
+  	
+        let thisComponent = this;
+        thisComponent.newInquiryingListDropdownStatus.isopen = open ;
   	}
   	
   	moveInquiryRecommendConditionDiv(){
@@ -295,7 +425,7 @@ export class InquiryRecommendMain {
   							{ translateX:"-50%" , translateY:"-50%"  }, 
   							{ duration: 10 }
   						).velocity(
-  							{ top:30 , translateX:"-50%" , scale:0.7  }, 
+  							{ top:50 , translateX:"-50%" , scale:0.9  }, 
   							{ duration: 1000 }
   						);
 					}
@@ -330,6 +460,5 @@ export class InquiryRecommendMain {
   				)
 			}
   		);
-  		
     }
 }

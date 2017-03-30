@@ -17,8 +17,11 @@ var CommonUtil = (function () {
     };
     CommonUtil.prototype.clearEmptyForJsonData = function (obj) {
         var json = JSON.stringify(obj);
-        json = json.replace(/(\"\"|\'\')/g, "null");
-        json = json.replace(/(\[\s*(,)*(null)*(,)*\s*\])/g, "null");
+        /*
+        json = json.replace(/(\"\"|\'\')/g,"null");
+        
+        json = json.replace(/( "*\S*"*\s*:\s*(null|Null|NULL)+\s*[,]* )/g,"");
+         */
         var newObj = JSON.parse(json);
         return newObj;
     };

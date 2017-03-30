@@ -37,7 +37,7 @@ import { Router , NavigationEnd } from '@angular/router';
 					</li> <!--  class="active" -->
 					<li role="presentation"><a routerLink="/order" href="javascript:;">Orders</a></li>
 					<li role="presentation"><a routerLink="/inquiryRecommend" href="javascript:;">Inquiry Recommend</a></li>
-					<li role="presentation"><a routerLink="/contract" href="javascript:;">Supplier</a></li>
+					<li role="presentation"><a routerLink="/corporation" href="javascript:;">Supplier evaluation</a></li>
 				</ul>
 				<div class="row" style="margin:5px">
 				    <!--

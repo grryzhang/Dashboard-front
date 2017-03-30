@@ -52,12 +52,6 @@ import { Wheel } from '../../model/wheel'
 															<td width="35%">Material</td>
 															<td>{{wheels[0]?.material}}</td>
 														</tr>
-														<template [ngIf]="wheels[0].certification && wheels[0].certification.length > 0">
-														<tr>
-															<td>Certification</td>
-															<td>{{wheels[0]?.certification}}</td>
-														</tr>
-														</template>
 														<tr>
 															<td>Price</td>
 															<td>
@@ -80,16 +74,12 @@ import { Wheel } from '../../model/wheel'
 															</td>
 														</tr>
 														<tr>
-															<td>PCD</td>
-															<td>{{wheels[0]?.pcd}}</td>
-														</tr>
-														<tr>
 															<td>Wheel Hub Diameter</td>
 															<td>{{wheels[0]?.wheelHubDiameter}}</td>
 														</tr>
 														<tr>
-															<td>Width</td>
-															<td>{{wheels[0]?.width}}</td>
+															<td>PCD</td>
+															<td>{{wheels[0]?.pcd}}</td>
 														</tr>
 														<tr>
 															<td>ET</td>
@@ -100,8 +90,8 @@ import { Wheel } from '../../model/wheel'
 															<td>{{wheels[0]?.hole}}</td>
 														</tr>
 														<tr>
-															<td>Finishing</td>
-															<td>{{wheels[0]?.finishing}}</td>
+															<td>Width</td>
+															<td>{{wheels[0]?.width}}</td>
 														</tr>
 														<tr>
 															<td>Production Capacity</td>

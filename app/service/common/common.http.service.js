@@ -21,6 +21,9 @@ var CommonHttpService = (function () {
         var body = res.json();
         return body || {};
     };
+    CommonHttpService.prototype.extractDataDirectly = function (res) {
+        return res;
+    };
     CommonHttpService.prototype.handleError = function (error) {
         var errMsg;
         if (error instanceof http_1.Response) {
@@ -34,9 +37,30 @@ var CommonHttpService = (function () {
         console.error(errMsg);
         return Observable_1.Observable.throw(errMsg);
     };
+    CommonHttpService.prototype.doDefaultPostDownload = function (url, parameters) {
+        var body = this.prepareSearchParameters2Body(parameters);
+        var requestOptions = this.getDefaultPostDownloadOptions();
+        return this.http.post(url, body, requestOptions);
+    };
+    CommonHttpService.prototype.getDefaultPostDownloadOptions = function () {
+        var headers = new http_2.Headers({
+            "Content-Type": "application/json",
+            "Accept": "application/*",
+        });
+        var options = new http_2.RequestOptions({
+            'headers': headers,
+            'responseType': http_2.ResponseContentType.Blob
+        });
+        return options;
+    };
     CommonHttpService.prototype.doDefaultJsonPost = function (url, parameters) {
         var body = this.prepareSearchParameters2Body(parameters);
         var requestOptions = this.getDefaultJsonRequestOptions();
+        return this.http.post(url, body, requestOptions).map(this.extractData).catch(this.handleError);
+    };
+    CommonHttpService.prototype.doAccessControlAllowPost = function (url, parameters) {
+        var body = this.prepareSearchParameters2Body(parameters);
+        var requestOptions = this.getAccessControlAllowOptions();
         return this.http.post(url, body, requestOptions).map(this.extractData).catch(this.handleError);
     };
     CommonHttpService.prototype.prepareSearchParameters2Body = function (parameters) {
@@ -49,10 +73,21 @@ var CommonHttpService = (function () {
         }
         return body;
     };
+    CommonHttpService.prototype.getAccessControlAllowOptions = function () {
+        var headers = new http_2.Headers({
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "POST",
+            "Access-Control-Allow-Headers": "x-requested-with,content-type",
+        });
+        var options = new http_2.RequestOptions({ 'headers': headers });
+        return options;
+    };
     CommonHttpService.prototype.getDefaultJsonRequestOptions = function () {
         var headers = new http_2.Headers({
             "Content-Type": "application/json",
-            "Accept": "application/json"
+            "Accept": "application/json",
         });
         var options = new http_2.RequestOptions({ 'headers': headers });
         return options;

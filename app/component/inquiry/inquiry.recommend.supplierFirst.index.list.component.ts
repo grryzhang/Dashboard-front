@@ -3,6 +3,7 @@
 /// <reference path="../../../resources/Require.js/require.d.ts" />
 /// <reference path="../../../resources/maxazan-jquery-treegrid/treegrid.d.ts" />
 /// <reference path="../../../resources/twbsPagination/twbsPagination.d.ts" />
+/// <reference path="../../../resources/file-saver/FileSaver.d.ts" />
 
 import { Component, Output, EventEmitter, ViewChild  }      from '@angular/core';  
 import { ChangeDetectionStrategy }  from '@angular/core';  
@@ -32,22 +33,22 @@ import { InquiryRecommendSupplierFirstComponent } from './inquiry.recommend.supp
     		  		<div class="col-xs-12 col-sm-8 col-lg-4">
     		  			<form>
     		  				<div class="input-group">
-										<input class="form-control" id="inquiryFuzzyInput" placeholder="Recommend Search" #recommend_searchParameters />
-										<span class="input-group-btn">
-    		          		<button 
-    		          			class="btn btn-default" 
-    		          			type="button" 
-    		          			(click)="getSaleOrderState( { 'fuzzy' : recommend_searchParameters.value } );">
-    		          			<span class="glyphicon glyphicon-search"></span>
-    		          		</button>
-    		          	</span>
-    		          	<span class="input-group-btn">
-    		          		<button class="btn btn-default" type="button" (click)="clearAndSearch();">
-    		          		<span><i class="fa fa-times" aria-hidden="true"></i></span>
-    		          		</button>
-    		          	</span>
-									</div>
-								</form>
+							    <input class="form-control" id="inquiryFuzzyInput" placeholder="Recommend Search" #recommend_searchParameters />
+								<span class="input-group-btn">
+    		          		        <button 
+    		          		        	class="btn btn-default" 
+    		          		        	type="button" 
+    		          		        	(click)="freshIndexList( { 'fuzzy' : recommend_searchParameters.value } );">
+    		          		        	<span class="glyphicon glyphicon-search"></span>
+    		          		        </button>
+    		          	        </span>
+    		          	        <span class="input-group-btn">
+    		          	        	<button class="btn btn-default" type="button" (click)="clearAndSearch();">
+    		          	        	<span><i class="fa fa-times" aria-hidden="true"></i></span>
+    		          	        	</button>
+    		          	        </span>
+					    	</div>
+					    </form>
     		  		</div>
     		  	</div><!--/row-search-end start-->
     		  		
@@ -73,6 +74,7 @@ import { InquiryRecommendSupplierFirstComponent } from './inquiry.recommend.supp
  										<tr>
     									<th>Inquiry Index No.</th>
     									<th>Inquiry Condition</th>
+    									<th>Export Excel Report</th>
     								</tr>
     							</thead>
     							<tbody> 
@@ -83,6 +85,21 @@ import { InquiryRecommendSupplierFirstComponent } from './inquiry.recommend.supp
     									</td>
     									<td>
     										<span class="front-label-12">Criteria <i class="fa fa-filter" aria-hidden="true"></i>{{recommendIndex?.indexCondition}}</span>
+    									</td>
+    									<td anchorId="download_td">
+    									    <div class="row">
+    									        <div class="col-xs-3 col-lg-3" anchorId="download_a">
+    									            <a (click)="downloadRecommendExcelReport( recommendIndex , $event )" href="javascript:;">
+    										            <i class="fa fa-download fa3" aria-hidden="true"></i>
+    										        </a>
+    									        </div>
+    									        <div class="col-xs-3 col-lg-3" anchorId="downloading_img" style="display:none;">
+    									            <img src="http://192.168.0.29/image/loading.gif" class="img-responsive" alt=""/>
+    									        </div>
+    									        <div class="col-xs-3 col-lg-3" anchorId="downloading_info" style="display:none;">
+    									            Downloading...
+    									        </div>
+    									    </div>
     									</td>
     								</tr>
     								</template>
@@ -102,6 +119,8 @@ export class InquiryRecommendSupplierFirstIndexListComponent {
 	
     @ViewChild(InquiryRecommendSupplierFirstComponent) supplierFirstModal : InquiryRecommendSupplierFirstComponent;
     
+    static id : string = "inquiry_recommend_supplier_first_index_list_component";
+    
     errorMessage : String;
 
     recommendIndexes : RecommendIndex[];
@@ -114,6 +133,49 @@ export class InquiryRecommendSupplierFirstIndexListComponent {
   	
         this.freshIndexList(null);
   	}                            
+  	
+  	
+  	downloadRecommendExcelReport( recommendIndex : RecommendIndex, event : any ){
+  	
+  	    let downloadElement = $(event.target).parents( "[anchorId='download_td']" );
+  	    
+  	    downloadElement.each(
+  	        ( index: any, element: any ) => {
+  	            
+  	            $(element).find( "[anchorId='download_a']"  ).hide();
+
+  	            $(element).find( "[anchorId='downloading_img']"  ).show();
+  	            $(element).find( "[anchorId='downloading_info']" ).show();
+  	        }
+  	    );
+  	    
+  	    if( recommendIndex.indexId ){
+  	        this.recommendService.downloadRecommendExcelReport( recommendIndex.indexId ).subscribe(
+  		        response => { 
+    	    	    let blob : any = new Blob( [ response.blob() ], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;" } );
+    	    	    let name = recommendIndex.indexId + ".xlsx";
+    	    	    requirejs(
+  		    	        ['fileSaver'],
+  		    	        () => {
+  		    	            saveAs( blob ,name );
+  		    	            
+  		    	            downloadElement.each(
+  	                            ( index: any, element: any ) => {
+  	                                
+  	                                $(element).find( "[anchorId='download_a']"  ).show();
+                            
+  	                                $(element).find( "[anchorId='downloading_img']"  ).hide();
+  	                                $(element).find( "[anchorId='downloading_info']" ).hide();
+  	                            }
+  	                        );
+  		    	        }
+  		    	    );
+    	    	},
+    	        error => { console.log( error ) }
+  	        );
+  	    }   
+  	}
+  	
   	
   	freshIndexList( searchParameters : any ){
   	    

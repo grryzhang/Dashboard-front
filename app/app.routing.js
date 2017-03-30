@@ -7,6 +7,7 @@ var appRoutes = [
     { path: 'order', loadChildren: 'app/component/order/order.module#OrderModule' },
     { path: 'inquiryRecommend', loadChildren: 'app/component/inquiry/inquiry.recommend.module#InquiryRecommendModule' },
     { path: 'contract', loadChildren: 'app/component/contract/contract.module#ContractModule' },
+    { path: 'corporation', loadChildren: 'app/component/corporation/corporation.module#CorporationModule' }
 ];
 exports.appRoutingProviders = [];
 exports.routing = router_1.RouterModule.forRoot(appRoutes, { useHash: true });

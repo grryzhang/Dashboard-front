@@ -4,8 +4,6 @@ import { BrowserModule } 	from '@angular/platform-browser';
 import { HttpModule,
          JsonpModule  }     from '@angular/http';
 
-import { DropdownModule } from 'ng2-bootstrap/ng2-bootstrap';
-
 import { Observable }    from 'rxjs';
 
 import { routing,
@@ -23,8 +21,6 @@ import { CommonUtil } from './service/common/common.util.service';
 	{
   		imports:      [ 
   			BrowserModule, 
-  			
-  			DropdownModule,
   			HttpModule,
   			JsonpModule,
   			

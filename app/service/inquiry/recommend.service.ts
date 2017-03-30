@@ -20,34 +20,75 @@ export class RecommendService {
   
     newRecommendIndex( indexCreateParameters : any ): Observable<any>{
     
-        let queryUrl = '/MD/recommend/new/wheel';
+        //let queryUrl = '/MD/recommend/new/wheel';
+        
+        let queryUrl = '/DataIndex/sieving/wheel';
         
         let noEmtpy = this.commonUtil.clearEmptyForJsonData( indexCreateParameters );
 		
-		return this.commonHttpService.doDefaultJsonPost( queryUrl , noEmtpy );
+		return this.commonHttpService.doAccessControlAllowPost( queryUrl , noEmtpy );
+    }
+    
+    downloadRecommendExcelReport( indexId : string ) : Observable<any> {
+    
+        let downloadUrl = '/DataIndex/export/recommend/wheel/' + indexId;
+        
+        return this.commonHttpService.doDefaultPostDownload( downloadUrl , {} );
     }
     
     queryRecommendList( searchParameters : any ) : Observable<any>{
     
-        let queryUrl = '/MD/recommend/list/wheel';
+        let queryUrl = '/DataIndex/recommend/list/wheel';
 		
-		return this.commonHttpService.doDefaultJsonPost( queryUrl , searchParameters );;
+		return this.commonHttpService.doDefaultJsonPost( queryUrl , searchParameters );
     }
     
-    queryRecommendCorpList( indexId : string , otherSearchParameter : any ) : Observable<any>{
+    queryRecommendCorpList( searchParameters : any ) : Observable<any>{
     
-        let queryUrl = '/MD/recommend/wheel/' + indexId +'/corpList';
+        if( searchParameters && searchParameters.indexIds ){
+    
+            let indexId = searchParameters.indexIds[0];
+            
+            if( indexId ){
+                let queryUrl = '/DataIndex/recommend/wheel/' + indexId +'/corpList';
+                
+                let otherSearchParameter = searchParameters;
 		
-		return this.commonHttpService.doDefaultJsonPost( queryUrl , otherSearchParameter );
+		        return this.commonHttpService.doDefaultJsonPost( queryUrl , otherSearchParameter );
+            }
+		}
     }
   	
-    queryOneRecommendIndex( indexId : string ) : Observable<any>{
+    queryOneRecommendIndex( searchParameters : any ) : Observable<any>{
+    
+        if( searchParameters && searchParameters.indexIds ){
+    
+            let indexId = searchParameters.indexIds[0];
+            
+            if( indexId ){
+                let queryUrl = '/DataIndex/recommend/wheel/' + indexId + '/default';
+                
+                let otherSearchParameter = searchParameters;
+		
+		        return this.commonHttpService.doDefaultJsonPost( queryUrl , otherSearchParameter );
+            }
+		}
+	}
 	
-		let queryUrl = '/MD/recommend/wheel/' + indexId;
+	queryOneRecommendCount( searchParameters : any ) : Observable<any>{
+	
+	     if( searchParameters && searchParameters.indexIds ){
+    
+            let indexId = searchParameters.indexIds[0];
+            
+            if( indexId ){
+                let queryUrl = '/DataIndex/recommend/wheel/' + indexId + '/count';
 		
-		let searchParameters = {};
+		        let otherSearchParameter = searchParameters;
 		
-		return this.commonHttpService.doDefaultJsonPost( queryUrl , searchParameters );;
+		        return this.commonHttpService.doDefaultJsonPost( queryUrl , otherSearchParameter );
+            }
+		}
 	}
 	
 }

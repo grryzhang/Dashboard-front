@@ -26,4 +26,28 @@ export class CorporationService {
 		
 		return this.commonHttpService.doDefaultJsonPost( queryUrl , noEmtpy );
     }
+    
+    queryEvaluationList( corporationGradeSearchParameters : any ): Observable<any>{
+    
+        let queryUrl = '/MD/corporation/evaluation/list';
+        
+        let noEmtpy = this.commonUtil.clearEmptyForJsonData( corporationGradeSearchParameters );
+		
+		return this.commonHttpService.doDefaultJsonPost( queryUrl , noEmtpy );
+    }
+    
+    queryEvaluation( corporationNumber : string ): Observable<any>{
+    
+        if( corporationNumber && corporationNumber.length > 0 ){
+        
+            let queryUrl = '/MD/corporation/evaluation/' + corporationNumber;
+        
+            let noEmpty = {};
+		
+		    return this.commonHttpService.doDefaultJsonPost( queryUrl , noEmpty );
+        }
+        
+    }
 }
+
+

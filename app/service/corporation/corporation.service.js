@@ -24,6 +24,18 @@ var CorporationService = (function () {
         var noEmtpy = this.commonUtil.clearEmptyForJsonData(corpSearchParameters);
         return this.commonHttpService.doDefaultJsonPost(queryUrl, noEmtpy);
     };
+    CorporationService.prototype.queryEvaluationList = function (corporationGradeSearchParameters) {
+        var queryUrl = '/MD/corporation/evaluation/list';
+        var noEmtpy = this.commonUtil.clearEmptyForJsonData(corporationGradeSearchParameters);
+        return this.commonHttpService.doDefaultJsonPost(queryUrl, noEmtpy);
+    };
+    CorporationService.prototype.queryEvaluation = function (corporationNumber) {
+        if (corporationNumber && corporationNumber.length > 0) {
+            var queryUrl = '/MD/corporation/evaluation/' + corporationNumber;
+            var noEmpty = {};
+            return this.commonHttpService.doDefaultJsonPost(queryUrl, noEmpty);
+        }
+    };
     CorporationService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http, common_http_service_1.CommonHttpService, common_util_service_1.CommonUtil])

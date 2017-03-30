@@ -5,15 +5,17 @@ require.config(
 	   	 	waitSeconds: 120,
 	    	//except, if the module ID starts with "lib"
 	     	paths: {
-	        	'jquery'          : './jquery/jquery.min',
-	        	'bootstrap'       : './Bootstrap/js/bootstrap',
-	        	'Chart'           : './Chart.js/Chart',
-	        	'elevatezoom'     : './elevatezoom-master/jquery.elevatezoom',
-	        	'treegrid'        : './maxazan-jquery-treegrid/js',
-	        	'twbsPagination'  : './twbsPagination/jquery.twbsPagination',
-	        	'velocity'        : './Velocity.js/velocity.min',
-       			'velocity-ui'     : './Velocity.js/velocity.ui',
-       			'icheck'          : './icheck.js/icheck.min',
+	        	'jquery'                : './jquery/jquery.min',
+	        	'bootstrap'             : './Bootstrap/js/bootstrap',
+	        	'Chart'                 : './Chart.js/Chart',
+	        	'elevatezoom'           : './elevatezoom-master/jquery.elevatezoom',
+	        	'treegrid'              : './maxazan-jquery-treegrid/js',
+	        	'twbsPagination'        : './twbsPagination/jquery.twbsPagination',
+	        	'velocity'              : './Velocity.js/velocity.min',
+       			'velocity-ui'           : './Velocity.js/velocity.ui',
+       			'icheck'                : './icheck.js/icheck.min',
+       			'fileSaver'             : './file-saver/FileSaver.min',
+       			'textEncodingMaster'    : ['./text-encoding-master/encoding','./text-encoding-master/encoding-indexes']
 	    	},
 	    	// load backbone as a shim
 	    	shim: {
@@ -66,6 +68,14 @@ require.config(
             		],
             		exports: 'ICheck',
         		},
+        		fileSaver:{
+	    			deps:[],
+	      			exports: 'FileSaver',
+	    		},
+	    		textEncodingMaster:{
+	    			deps:[],
+	      			exports: 'TextEncodingMaster',
+	    		},
 	    	},	
 	    	map: {
         		'*': {

@@ -13,13 +13,18 @@ export class CommonUtil{
     
     clearEmptyForJsonData( obj : any ) : any{
     
+        
         let json = JSON.stringify( obj );
+        
+        /*
         json = json.replace(/(\"\"|\'\')/g,"null");
         
-        json = json.replace(/(\[\s*(,)*(null)*(,)*\s*\])/g,"null");
-        
+        json = json.replace(/( "*\S*"*\s*:\s*(null|Null|NULL)+\s*[,]* )/g,"");
+         */
+         
         let newObj = JSON.parse( json );
         
         return newObj;
+        
     }
 }

@@ -20,24 +20,48 @@ var RecommendService = (function () {
         this.commonUtil = commonUtil;
     }
     RecommendService.prototype.newRecommendIndex = function (indexCreateParameters) {
-        var queryUrl = '/MD/recommend/new/wheel';
+        //let queryUrl = '/MD/recommend/new/wheel';
+        var queryUrl = '/DataIndex/sieving/wheel';
         var noEmtpy = this.commonUtil.clearEmptyForJsonData(indexCreateParameters);
-        return this.commonHttpService.doDefaultJsonPost(queryUrl, noEmtpy);
+        return this.commonHttpService.doAccessControlAllowPost(queryUrl, noEmtpy);
+    };
+    RecommendService.prototype.downloadRecommendExcelReport = function (indexId) {
+        var downloadUrl = '/DataIndex/export/recommend/wheel/' + indexId;
+        return this.commonHttpService.doDefaultPostDownload(downloadUrl, {});
     };
     RecommendService.prototype.queryRecommendList = function (searchParameters) {
-        var queryUrl = '/MD/recommend/list/wheel';
+        var queryUrl = '/DataIndex/recommend/list/wheel';
         return this.commonHttpService.doDefaultJsonPost(queryUrl, searchParameters);
-        ;
     };
-    RecommendService.prototype.queryRecommendCorpList = function (indexId, otherSearchParameter) {
-        var queryUrl = '/MD/recommend/wheel/' + indexId + '/corpList';
-        return this.commonHttpService.doDefaultJsonPost(queryUrl, otherSearchParameter);
+    RecommendService.prototype.queryRecommendCorpList = function (searchParameters) {
+        if (searchParameters && searchParameters.indexIds) {
+            var indexId = searchParameters.indexIds[0];
+            if (indexId) {
+                var queryUrl = '/DataIndex/recommend/wheel/' + indexId + '/corpList';
+                var otherSearchParameter = searchParameters;
+                return this.commonHttpService.doDefaultJsonPost(queryUrl, otherSearchParameter);
+            }
+        }
     };
-    RecommendService.prototype.queryOneRecommendIndex = function (indexId) {
-        var queryUrl = '/MD/recommend/wheel/' + indexId;
-        var searchParameters = {};
-        return this.commonHttpService.doDefaultJsonPost(queryUrl, searchParameters);
-        ;
+    RecommendService.prototype.queryOneRecommendIndex = function (searchParameters) {
+        if (searchParameters && searchParameters.indexIds) {
+            var indexId = searchParameters.indexIds[0];
+            if (indexId) {
+                var queryUrl = '/DataIndex/recommend/wheel/' + indexId + '/default';
+                var otherSearchParameter = searchParameters;
+                return this.commonHttpService.doDefaultJsonPost(queryUrl, otherSearchParameter);
+            }
+        }
+    };
+    RecommendService.prototype.queryOneRecommendCount = function (searchParameters) {
+        if (searchParameters && searchParameters.indexIds) {
+            var indexId = searchParameters.indexIds[0];
+            if (indexId) {
+                var queryUrl = '/DataIndex/recommend/wheel/' + indexId + '/count';
+                var otherSearchParameter = searchParameters;
+                return this.commonHttpService.doDefaultJsonPost(queryUrl, otherSearchParameter);
+            }
+        }
     };
     RecommendService = __decorate([
         core_1.Injectable(), 

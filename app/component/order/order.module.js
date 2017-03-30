@@ -23,7 +23,7 @@ var OrderModule = (function () {
             imports: [
                 common_1.CommonModule,
                 order_routing_1.orderRouting,
-                ng2_bootstrap_1.TooltipModule,
+                ng2_bootstrap_1.TooltipModule.forRoot()
             ],
             declarations: [
                 order_state_component_1.OrderStateComponent,

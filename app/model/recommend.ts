@@ -1,6 +1,6 @@
-import { Corporation   }    from './corporation';
-import { Wheel         }    from './wheel';
-
+import { Corporation            }    from './corporation';
+import { Wheel                  }    from './wheel';
+import { CorporationGradeList   }    from './corporation';
 
 export class RecommendCorporation { 
 
@@ -12,6 +12,8 @@ export class RecommendCorporation {
 	indexId          : string       ;
  	indexCondition   : string       ;
 	dataType         : string       ;
+	
+	gradeInfo        : CorporationGradeList ;
 
 	constructor(
 	
@@ -22,7 +24,9 @@ export class RecommendCorporation {
 		wheels           ?: Wheel[]       ,
 		indexId          ?: string        ,
  		indexCondition   ?: string        ,
-		dataType         ?: string
+		dataType         ?: string        ,
+		
+		gradeInfo        ?: CorporationGradeList
 	){}
 }
 
@@ -33,11 +37,28 @@ export class RecommendIndex {
 	dataType         : string       ;
 	count            : string       ;
 	
+	complete         : boolean      ;
+	
 	constructor(
 	
 		indexId          ?: string        ,
  		indexCondition   ?: string        ,
 		dataType         ?: string        ,
-		count            ?: string
+		count            ?: string        ,
+		
+		complete         ?: boolean       
 	){}
 }
+
+export class RecommendSearchParameters {
+    
+    start    : number;
+    limit    : number;
+    indexIds : string [];
+    
+    constructor(
+        start    ?: number,
+        limit    ?: number,
+        indexIds ?: string []
+    ){}
+};

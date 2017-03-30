@@ -130,11 +130,11 @@ import { TooltipModule } from 'ng2-bootstrap/ng2-bootstrap';
     														  		</td>
     														  		<td>{{orderItemState?.type}}</td>
     														  		<td>{{orderItemState?.name}}</td>
-    														  		<td>{{orderItemState?.unitPrice}}</td>
-    														  		<td></td>
+    														  		<td>***</td>
+    														  		<td>***</td>
     														  		<td>{{orderItemState?.totalNumber}}</td>
     														  		<td>{{orderItemState?.unit}}</td>
-    														  		<td>{{orderItemState?.totalPrice}}</td>
+    														  		<td>***</td>
     														  	</tr>
     														</thead>
     													</table>

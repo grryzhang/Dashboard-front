@@ -16,14 +16,14 @@ import { TooltipModule } from 'ng2-bootstrap/ng2-bootstrap';
   	  	  	CommonModule,
     		orderRouting,
     		
-    		TooltipModule,
+    		TooltipModule.forRoot()
   	  	],
   	  	declarations: [
   	  	  	OrderStateComponent,
   	  	  	SaleOrderStateDetailModalComponents
   	  	],
   	  	providers: [
-    			OrderService
+    		OrderService
   		]
 	}
 )
